@@ -1,0 +1,101 @@
+#include <iostream>
+#include <iomanip>
+#include <string>
+using namespace std;
+
+// Structure to store employee details
+struct Employee {
+    int id;
+    string name;
+    float salary;
+};
+
+int main() {
+    const int SIZE = 10;
+    Employee emp[SIZE];
+
+    // Read details for all employees
+    cout << "Enter details for " << SIZE << " employees:\n";
+    for (int i = 0; i < SIZE; ++i) {
+        cout << "\nEmployee " << i + 1 << ":\n";
+        cout << "ID: ";
+        cin >> emp[i].id;
+        cin.ignore(); // Clear newline before reading name
+        cout << "Name: ";
+        getline(cin, emp[i].name);
+        cout << "Salary: ";
+        cin >> emp[i].salary;
+    }
+
+    int choice;
+    do {
+        cout << "\n================= MENU =================\n";
+        cout << "1. Display all employee details\n";
+        cout << "2. Search employee by ID\n";
+        cout << "3. Increase salary of employees earning < ₹30,000 by 10%\n";
+        cout << "4. Exit\n";
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1: {
+                cout << "\nAll Employee Details:\n";
+                cout << left << setw(10) << "ID" 
+                     << setw(20) << "Name"
+                     << setw(10) << "Salary" << endl;
+                cout << "----------------------------------------\n";
+                for (int i = 0; i < SIZE; ++i) {
+                    cout << left << setw(10) << emp[i].id
+                         << setw(20) << emp[i].name
+                         << fixed << setprecision(2)
+                         << setw(10) << emp[i].salary << endl;
+                }
+                break;
+            }
+
+            case 2: {
+                int searchId;
+                cout << "\nEnter Employee ID to search: ";
+                cin >> searchId;
+                bool found = false;
+                for (int i = 0; i < SIZE; ++i) {
+                    if (emp[i].id == searchId) {
+                        cout << "\nEmployee Found:\n";
+                        cout << "ID: " << emp[i].id << endl;
+                        cout << "Name: " << emp[i].name << endl;
+                        cout << "Salary: " << fixed << setprecision(2)
+                             << emp[i].salary << endl;
+                        found = true;
+                        break;
+                    }
+                }
+                if (!found)
+                    cout << "Employee with ID " << searchId << " not found.\n";
+                break;
+            }
+
+            case 3: {
+                cout << "\nIncreasing salaries by 10% for employees earning less than ₹30,000...\n";
+                int count = 0;
+                for (int i = 0; i < SIZE; ++i) {
+                    if (emp[i].salary < 30000) {
+                        emp[i].salary *= 1.10f;
+                        count++;
+                    }
+                }
+                cout << count << " employee(s) had their salary increased.\n";
+                break;
+            }
+
+            case 4:
+                cout << "Exiting program. Goodbye!\n";
+                break;
+
+            default:
+                cout << "Invalid choice! Please try again.\n";
+        }
+
+    } while (choice != 4);
+
+    return 0;
+}
