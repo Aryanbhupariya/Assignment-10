@@ -1,0 +1,41 @@
+#include <iostream>
+#include <fstream>
+using namespace std;
+struct Sales {
+    string month;
+    float amount;
+};
+int main() {
+    Sales s[12];
+    float total = 0, avg;
+    cout << "Enter sales of 12 months:\n";
+    for (int i = 0; i < 12; i++) {
+        cout << "Month: ";
+        cin >> s[i].month;
+        cout << "Amount: ";
+        cin >> s[i].amount;
+        total += s[i].amount;
+    }
+    ofstream fout("sales_data.txt");
+    for (int i = 0; i < 12; i++)
+        fout << s[i].month << " " << s[i].amount << endl;
+    fout.close();
+    ifstream fin("sales_data.txt");
+    Sales r[12];
+    total = 0;
+    int i = 0;
+    while (fin >> r[i].month >> r[i].amount) {
+        total += r[i].amount;
+        i++;
+    }
+    fin.close();
+    avg = total / 12;
+    cout << "\nAverage sales = " << avg << endl;
+    cout << "Months above average:\n";
+    for (int j = 0; j < 12; j++) {
+        if (r[j].amount > avg)
+            cout << r[j].month << "  " << r[j].amount << endl;
+    }
+    return 0;
+}
+
